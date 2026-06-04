@@ -3,23 +3,25 @@
 #include "web_server.h"
 #include "comms.h"
 
+// Configurações iniciais do sistema
 void setup() {
   Serial.begin(115200);
   delay(1000);
   Serial.println("\n--- Configuracao WI-FI ---");
 
-  if (!iniciarSensor()) {
-    Serial.println("ERRO: Sensor INA219 nao encontrado!");
-    while (1) { delay(10); } 
-  }
-  
   iniciarWebServer(); // Inicia a rede AP
   initComms();        // Inicia o recetor ESP-NOW (DEPOIS DA REDE)
   
   Serial.println("Sistema online!");
   Serial.println("----------------------------------------------");
+
+  if (!iniciarSensor()) {
+    Serial.println("ERRO: Sensor INA219 nao encontrado!");
+    while (1) { delay(10); } 
+  }
 }
 
+// Loop principal: Processa o web server e mostra os dados a cada segundo
 void loop() {
   processarWebServer();
   

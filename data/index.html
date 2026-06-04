@@ -1,114 +1,72 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-PT">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Telemetria do Sistema</title>
-  <style>
-    body { background-color: #121212; color: #00ffcc; font-family: 'Courier New', Courier, monospace; padding: 20px; margin: 0; }
-    h1 { text-align: center; color: #ffffff; }
-    
-    /* Grelha para colocar os 3 sistemas lado a lado */
-    .grid-container { 
-      display: grid; 
-      grid-template-columns: repeat(3, 1fr); 
-      gap: 15px; 
-      max-width: 1200px; 
-      margin: 0 auto; 
-    }
-
-    .coluna { 
-      background-color: #1e1e1e; 
-      border: 1px solid #333; 
-      border-radius: 10px; 
-      padding: 15px; 
-      text-align: center;
-    }
-
-    h2 { color: #00ffcc; font-size: 1.1em; border-bottom: 1px solid #333; padding-bottom: 10px; }
-    
-    .card-data { margin: 15px 0; padding: 10px; background: #252525; border-radius: 5px; }
-    .label { font-size: 0.8em; color: #888; display: block; text-transform: uppercase; }
-    .valor { font-size: 1.6em; font-weight: bold; color: #ffffff; }
-    .unidade { font-size: 0.6em; color: #00ffcc; margin-left: 4px; }
-
-    /* Painel de Estado no fundo */
-    .status-container {
-      max-width: 1200px;
-      margin: 20px auto;
-      background-color: #1e1e1e;
-      border: 1px solid #00ffcc;
-      border-radius: 10px;
-      padding: 20px;
-      text-align: center;
-    }
-    #estado_txt { font-size: 2em; font-weight: bold; color: #ffcc00; text-transform: uppercase; }
-
-    /* Responsividade para ecrãs pequenos */
-    @media (max-width: 800px) {
-      .grid-container { grid-template-columns: 1fr; }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <h1>Painel de Controlo</h1>
   
   <div class="grid-container">
-    <div class="coluna">
-      <h2>Painel</h2>
-      <div class="card-data"><span class="label">Tensão (V)</span><span class="valor" id="v_mini2">--</span><span class="unidade"></span></div>
-      <div class="card-data"><span class="label">Corrente (mA)</span><span class="valor" id="c_mini2">--</span><span class="unidade"></span></div>
-      <div class="card-data"><span class="label">Potência (mW)</span><span class="valor" id="p_mini2">--</span><span class="unidade"></span></div>
+    <div class="coluna borda-rede">
+      <h2>Rede</h2>
+      <div class="table-container">
+        <table id="tabela_rede">
+          <thead>
+            <tr>
+              <th>Tensão (V)</th>
+              <th>Corrente (mA)</th>
+              <th>Potência (mW)</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
     </div>
 
-    <div class="coluna">
+    <div class="coluna borda-cidade">
       <h2>Cidade</h2>
-      <div class="card-data"><span class="label">Tensão (V)</span><span class="valor" id="v_mini1">--</span><span class="unidade"></span></div>
-      <div class="card-data"><span class="label">Corrente (mA)</span><span class="valor" id="c_mini1">--</span><span class="unidade"></span></div>
-      <div class="card-data"><span class="label">Potência (mW)</span><span class="valor" id="p_mini1">--</span><span class="unidade"></span></div>
+      <div class="table-container">
+        <table id="tabela_cidade">
+          <thead>
+            <tr>
+              <th>Tensão (V)</th>
+              <th>Corrente (mA)</th>
+              <th>Potência (mW)</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
     </div>
 
-    <div class="coluna">
+    <div class="coluna borda-bateria">
       <h2>Bateria Gravítica</h2>
-      <div class="card-data"><span class="label">Tensão (V)</span><span class="valor" id="v_master">--</span><span class="unidade"></span></div>
-      <div class="card-data"><span class="label">Corrente (mA)</span><span class="valor" id="c_master">--</span><span class="unidade"></span></div>
-      <div class="card-data"><span class="label">Potência (mW)</span><span class="valor" id="p_master">--</span><span class="unidade"></span></div>
+      <div class="table-container">
+        <table id="tabela_bateria">
+          <thead>
+            <tr>
+              <th>Tensão (V)</th>
+              <th>Corrente (mA)</th>
+              <th>Potência (mW)</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 
   <div class="status-container">
-    <span class="label">Estado do Sistema</span>
+    <span style="font-size: 0.8em; color: #888; text-transform: uppercase;">Estado do Sistema</span>
     <div id="estado_txt">A CARREGAR</div>
   </div>
 
-  <script>
-    function atualizar() {
-      fetch('/dados')
-        .then(res => res.json())
-        .then(data => {
-          // Master
-          document.getElementById('v_master').innerText = data.v_master.toFixed(2);
-          document.getElementById('c_master').innerText = data.c_master.toFixed(2);
-          document.getElementById('p_master').innerText = data.p_master.toFixed(2);
-
-          // Mini 1
-          document.getElementById('v_mini1').innerText = data.v_mini1.toFixed(2);
-          document.getElementById('c_mini1').innerText = data.c_mini1.toFixed(2);
-          document.getElementById('p_mini1').innerText = data.p_mini1.toFixed(2);
-
-          // Mini 2
-          document.getElementById('v_mini2').innerText = data.v_mini2.toFixed(2);
-          document.getElementById('c_mini2').innerText = data.c_mini2.toFixed(2);
-          document.getElementById('p_mini2').innerText = data.p_mini2.toFixed(2);
-
-          // Logica exemplo para mudar o texto do Estado (pode vir do JSON também)
-          // let estado = data.estado; // Se o ESP enviar uma string no json
-          // document.getElementById('estado_txt').innerText = estado;
-        })
-        .catch(err => console.error("Erro:", err));
-    }
-
-    setInterval(atualizar, 1000);
-  </script>
+  <script src="scripts.js"></script>
 </body>
 </html>

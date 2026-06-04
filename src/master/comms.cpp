@@ -11,7 +11,7 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
   struct_message dadosRecebidos;
   memcpy(&dadosRecebidos, incomingData, sizeof(dadosRecebidos));
   
-  // Guarda no cacifo correto dependendo de quem enviou
+  //  Atualiza a última leitura da Mini correspondente com os dados recebidos
   if (dadosRecebidos.id == 1) {
     ultimaLeituraMini1 = dadosRecebidos;
   } else if (dadosRecebidos.id == 2) {
@@ -19,10 +19,8 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
   }
 }
 
+// Função para iniciar a comunicação ESP-NOW
 void initComms() {
-  // ATENÇÃO: Não usamos WiFi.mode() aqui porque o seu web_server.cpp 
-  // já trata disso quando cria a rede com WiFi.softAP()
-  
   if (esp_now_init() != ESP_OK) {
     Serial.println("ERRO: Falha ao inicializar o ESP-NOW no Master!");
     return;
@@ -30,7 +28,7 @@ void initComms() {
   
   // Diz ao ESP32 para usar a nossa função OnDataRecv quando chegarem dados
   esp_now_register_recv_cb(OnDataRecv);
-  Serial.println("ESP-NOW Master Iniciado. A escuta...");
+  Serial.println("[Master] ESP-NOW Iniciado. A escuta...");
 }
 
 // Funções "Getter" para o web_server.cpp ir buscar os dados de forma segura

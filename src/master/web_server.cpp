@@ -11,6 +11,7 @@ WebServer server(80);
 const char* ssid = WIFI_SSID;
 const char* password = WIFI_PASS;
 
+// Função para iniciar o servidor web e configurar as rotas
 void iniciarWebServer() {
   Serial.println("A ligar o Disco Rigido Interno (LittleFS)...");
     
@@ -36,7 +37,7 @@ void iniciarWebServer() {
   }
   Serial.println("-------------------------\n");
 
-  Serial.println("A iniciar a Rede Wi-Fi do Master...");
+  Serial.println("[Master] A iniciar a Rede Wi-Fi");
   
   WiFi.mode(WIFI_AP_STA); // Força a placa a manter o modo Recetor ativo
 
@@ -50,50 +51,64 @@ void iniciarWebServer() {
   Serial.print("Rede criada: "); Serial.println(ssid);
   Serial.print("Endereco do Painel: http://"); Serial.println(IP);
   
-  // Configuramos as rotas do servidor web
-  server.on("/", []() {
-    // Verificamos com o nome exato
-    if (LittleFS.exists("/index.html")) {
-        File file = LittleFS.open("/index.html", "r");
-        server.streamFile(file, "text/html");
-        file.close();
-    } else {
-        server.send(404, "text/plain", "ERRO: O ficheiro index.html nao esta gravado no disco da ESP32!");
+  // Configuração do servidor web para servir os ficheiros estáticos (HTML, CSS, JS) do LittleFS
+  // 1. Rota explícita para a raiz: Força a abertura direta do ficheiro index.html
+  server.on("/", HTTP_GET, []() {
+    File file = LittleFS.open("/index.html", "r");
+    if (!file) {
+      server.send(404, "text/plain", "ERRO interno: index.html inacessivel!");
+      return;
     }
+    server.streamFile(file, "text/html");
+    file.close();
   });
 
+  // 1. PRIMEIRO: Rotas específicas de API (os teus dados JSON)
   server.on("/dados", []() {
-    // 1. Lê os dados do INA219 local
     DadosEnergia dados_master = lerDadosSensor();
-    
-    // 2. Vai buscar os últimos dados recebidos via ESP-NOW
     struct_message mini1 = getDadosMini1();
     struct_message mini2 = getDadosMini2();
 
-    // 3. Monta o JSON com tudo junto
     String json = "{";
     json += "\"v_master\":" + String(dados_master.tensao_V) + ",";
     json += "\"c_master\":" + String(dados_master.corrente_mA) + ",";
     json += "\"p_master\":" + String(dados_master.potencia_mW) + ",";
-    
-    // Adiciona o Mini 1
     json += "\"v_mini1\":" + String(mini1.tensao_V) + ",";
     json += "\"c_mini1\":" + String(mini1.corrente_mA) + ",";
     json += "\"p_mini1\":" + String(mini1.potencia_mW) + ",";
-
-    // Adiciona o Mini 2
     json += "\"v_mini2\":" + String(mini2.tensao_V) + ",";
     json += "\"c_mini2\":" + String(mini2.corrente_mA) + ",";
-    json += "\"p_mini2\":" + String(mini2.potencia_mW);
+    json += "\"p_mini2\":" + String(mini2.potencia_mW) + ",";
+    json += "\"estado\":\"Sistema Online\"";
     json += "}";
     
     server.send(200, "application/json", json);
+  });
+
+  // 2. SEGUNDO: A rota explícita para o index.html (a solução da resposta anterior)
+  server.on("/", HTTP_GET, []() {
+    File file = LittleFS.open("/index.html", "r");
+    if (!file) {
+      server.send(404, "text/plain", "ERRO interno: index.html inacessivel!");
+      return;
+    }
+    server.streamFile(file, "text/html");
+    file.close();
+  });
+
+  // 3. TERCEIRO: A rota genérica para servir CSS, JS e imagens
+  server.serveStatic("/", LittleFS, "/");
+
+  // 4. QUARTO: Salvaguarda global (Erro 404)
+  server.onNotFound([]() {
+    server.send(404, "text/plain", "ERRO: Ficheiro ou rota nao encontrada!");
   });
 
   server.begin();
   Serial.println("Servidor Web a correr!");
 }
 
+// Função para processar as requisições do servidor web (deve ser chamada no loop principal)
 void processarWebServer() {
   server.handleClient(); 
 }
