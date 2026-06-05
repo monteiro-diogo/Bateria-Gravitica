@@ -5,14 +5,15 @@
 // A biblioteca do Rob Tillaart exige o endereço I2C
 INA226 ina226(0x44); 
 
+#define I2C_SDA_PIN 4
+#define I2C_SCL_PIN 5
+
 bool iniciarSensor() {
   Serial.println("\n--- A INICIAR O SENSOR INA226 ---");
-  
-  // Inicializa o I2C nos pinos corretos (SDA=4, SCL=5). confirma de acordo com o teu hardware
-  Wire.begin(4, 5);
+  Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN);
 
   // --- DEBUG: SCANNER I2C ---
-  Serial.println("A procurar dispositivos I2C nos pinos 4 e 5...");
+  Serial.println("A procurar dispositivos I2C nos pinos " + String(I2C_SDA_PIN) + " e " + String(I2C_SCL_PIN) + "...");
   byte count = 0;
   for (byte i = 8; i < 120; i++) {
     Wire.beginTransmission(i);
@@ -25,7 +26,7 @@ bool iniciarSensor() {
   }
   
   if (count == 0) {
-    Serial.println("ERRO FISICO: Nenhum sensor encontrado! Verifica os fios e a alimentacao.");
+    Serial.println("ERRO FISICO: Nenhum sensor encontrado! Verificar os fios e a alimentacao.");
     while(1) { delay(100); } // Pára a placa aqui para evitar loop de erros
   }
   Serial.println("---------------------------------");

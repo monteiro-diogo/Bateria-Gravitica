@@ -1,36 +1,34 @@
 #include <Arduino.h>
 #include "comms.h"
 #include "ina226.h"
+#include "config.h"
 
-// ID do Mini (1 ou 2, dependendo de que placa está a gravar)
-const int ID_MINI = 1; 
+const int ID_MINI = 2; 
 
 void setup() {
-  Serial.begin(115200);
-  delay(1000); // Dá tempo ao Serial para conectar
+  Serial.begin(SERIAL_BAUD_RATE);
+
+  while (!Serial && millis() < 5000) {
+    delay(10);
+  }
+
+  delay(DELAY_ARRANQUE_MS);
 
   Serial.println("\n--- ARRANQUE DO MINI (ESP32-C3) ---");
   
-  // Inicia o sensor (todo o Scanner I2C e Debugging acontece lá dentro agora)
   iniciarSensor();
-
-  // Inicia as comunicações ESP-NOW
   initComms(); 
   
   Serial.println("Arrancou! A entrar no Loop de leitura...");
 }
 
+// Loop principal: Lê os dados do sensor e envia por ESP-NOW de tempo a tempo definido em config.h
 void loop() {
   static unsigned long ultimoEnvio = 0;
   
-  // Envia os dados para o Master apenas a cada 1 segundo (1000 ms)
-  if (millis() - ultimoEnvio >= 1000) {  
+  if (millis() - ultimoEnvio >= INTERVALO_TELEMETRIA_MS) {  
     ultimoEnvio = millis();
-
-    // 1. Lê o sensor
     DadosEnergia dados = lerDadosSensor();
-
-    // 2. Dispara pelo ar para o Master (que depois mete no Web Server)
     sendData(ID_MINI, dados.tensao_V, dados.corrente_mA, dados.potencia_mW);
   }
 }
