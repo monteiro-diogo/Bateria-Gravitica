@@ -1,5 +1,5 @@
-// Limite de histórico para evitar problemas de memória no navegador
-const MAX_LINHAS = 50; 
+const MAX_LINHAS = 50; // Limite de histórico no navegador
+const TAXA_ATUALIZACAO_MS = 1000; // Taxa de atualização em milissegundos 
 
 function adicionarLinha(idTabela, v, c, p) {
   const tbody = document.querySelector(`#${idTabela} tbody`);
@@ -41,5 +41,4 @@ function atualizar() {
     .catch(err => console.error("Erro ao obter dados da telemetria:", err));
 }
 
-// Inicia o ciclo de atualização a cada 1 segundo (1000 ms)
-setInterval(atualizar, 1000);
+setInterval(atualizar, TAXA_ATUALIZACAO_MS);
