@@ -26,12 +26,12 @@ DadosEnergia lerDadosSensor() {
   current_mA = ina219.getCurrent_mA();
   power_mW = ina219.getPower_mW();
 
-  // No caso de corrente negativa
+  // Em caso de corrente negativa
   if (current_mA < 0) {
     current_mA = std::fabs(current_mA); 
   }
 
-  // Para evitar ruido
+  // Em caso de ruido
   if (busvoltage < 1.0) {
     busvoltage = 0.0;
     current_mA = 0.0;

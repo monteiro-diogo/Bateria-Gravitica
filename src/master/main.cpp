@@ -2,11 +2,12 @@
 #include "ina219.h"
 #include "web_server.h"
 #include "comms.h"
+#include "config.h"
 
 // Configurações iniciais do sistema
 void setup() {
-  Serial.begin(115200);
-  delay(1000);
+  Serial.begin(SERIAL_BAUD_RATE);
+  delay(DELAY_ARRANQUE_MS);
   Serial.println("\n--- Configuracao WI-FI ---");
 
   iniciarWebServer(); // Inicia a rede AP
@@ -26,7 +27,7 @@ void loop() {
   processarWebServer();
   
   static unsigned long ultimoEnvio = 0;
-  if (millis() - ultimoEnvio >= 1000) {  
+  if (millis() - ultimoEnvio >= INTERVALO_TELEMETRIA_MS) {  
     ultimoEnvio = millis();
     
     // Mostra as leituras locais

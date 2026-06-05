@@ -9,13 +9,23 @@ struct_message ultimaLeituraMini2 = {2, 0.0, 0.0, 0.0};
 // Função Callback: O que fazer quando uma mensagem chega do "ar"
 void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
   struct_message dadosRecebidos;
-  memcpy(&dadosRecebidos, incomingData, sizeof(dadosRecebidos));
   
-  //  Atualiza a última leitura da Mini correspondente com os dados recebidos
-  if (dadosRecebidos.id == 1) {
-    ultimaLeituraMini1 = dadosRecebidos;
-  } else if (dadosRecebidos.id == 2) {
-    ultimaLeituraMini2 = dadosRecebidos;
+  // Segurança para evitar estouro de memória se o tamanho não coincidir
+  if (len == sizeof(struct_message)) {
+    memcpy(&dadosRecebidos, incomingData, sizeof(dadosRecebidos));
+    
+    // Debug para confirmar na consola do Master que o rádio captou o sinal
+    Serial.print("[Radio Master] Pacote recebido com sucesso do ID: ");
+    Serial.println(dadosRecebidos.id);
+
+    if (dadosRecebidos.id == 1) {
+      ultimaLeituraMini1 = dadosRecebidos;
+    } else if (dadosRecebidos.id == 2) {
+      ultimaLeituraMini2 = dadosRecebidos;
+    }
+  } else {
+    Serial.print("[Radio Master] ALERTA: Tamanho de pacote invalido recebido: ");
+    Serial.println(len);
   }
 }
 

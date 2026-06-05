@@ -20,12 +20,24 @@ void iniciarWebServer() {
     return;
   }
 
-  // Para DEBUGGING (para veres o que tens gravado no disco da ESP32, se tiveres algo)
+  Serial.print("Endereco Mac: ");
+  Serial.println(WiFi.macAddress());
+  Serial.println(WiFi.softAPmacAddress());
+  
+  // DEBUGGING: 
   Serial.println("\n--- CONTEUDO DO DISCO ---");
   File root = LittleFS.open("/");
   File file = root.openNextFile();
   bool discoVazio = true;
-  
+  unsigned int espacoTotal = LittleFS.totalBytes();
+  unsigned int espacoUsado = LittleFS.usedBytes();
+  unsigned int espacoLivre = espacoTotal - espacoUsado;
+
+  Serial.print("Espaço total: ");
+  Serial.println(espacoTotal);
+  Serial.print("Espaço livre: ");
+  Serial.println(espacoLivre);
+
   while(file){
       Serial.print("Encontrado: ");
       Serial.println(file.name());
@@ -79,7 +91,7 @@ void iniciarWebServer() {
     json += "\"v_mini2\":" + String(mini2.tensao_V) + ",";
     json += "\"c_mini2\":" + String(mini2.corrente_mA) + ",";
     json += "\"p_mini2\":" + String(mini2.potencia_mW) + ",";
-    json += "\"estado\":\"Sistema Online\"";
+    json += "\"estado\":\"Online\"";
     json += "}";
     
     server.send(200, "application/json", json);
