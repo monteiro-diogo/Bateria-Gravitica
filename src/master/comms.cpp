@@ -15,7 +15,7 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
     memcpy(&dadosRecebidos, incomingData, sizeof(dadosRecebidos));
     
     // Debug para confirmar na consola do Master que o rádio captou o sinal
-    Serial.print("[Radio Master] Pacote recebido com sucesso do ID: ");
+    Serial.print("[ESP-NOW] ESP-C3 Mini a comunicar: ");
     Serial.println(dadosRecebidos.id);
 
     if (dadosRecebidos.id == 1) {
@@ -24,7 +24,7 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
       ultimaLeituraMini2 = dadosRecebidos;
     }
   } else {
-    Serial.print("[Radio Master] ALERTA: Tamanho de pacote invalido recebido: ");
+    Serial.print("[ESP-NOW] ERRO: Tamanho de pacote invalido recebido: ");
     Serial.println(len);
   }
 }
@@ -32,13 +32,13 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
 // Função para iniciar a comunicação ESP-NOW
 void initComms() {
   if (esp_now_init() != ESP_OK) {
-    Serial.println("ERRO: Falha ao inicializar o ESP-NOW no Master!");
+    Serial.println("[ESP-NOW] ERRO: Falha ao inicializar o ESP-NOW no Master!");
     return;
   }
   
   // Diz ao ESP32 para usar a nossa função OnDataRecv quando chegarem dados
   esp_now_register_recv_cb(OnDataRecv);
-  Serial.println("[Master] ESP-NOW Iniciado. A escuta...");
+  Serial.println("[ESP-NOW] Iniciado com sucesso.");
 }
 
 // Funções "Getter" para o web_server.cpp ir buscar os dados de forma segura

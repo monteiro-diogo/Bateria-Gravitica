@@ -1,18 +1,10 @@
 #ifndef COMMS_H
 #define COMMS_H
-
-#include <Arduino.h>
-
-//igualar aos minis
-typedef struct struct_message {
-  int id;
-  float tensao_V;
-  float corrente_mA;
-  float potencia_mW;
-} struct_message;
+#include "protocol.h"
 
 // Funções para iniciar e aceder aos dados guardados
 void initComms();
+// Funções "Getter" para o web_server.cpp ir buscar os dados de forma segura
 struct_message getDadosMini1();
 struct_message getDadosMini2();
 
