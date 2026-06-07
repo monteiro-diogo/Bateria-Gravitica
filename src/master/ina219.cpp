@@ -26,12 +26,12 @@ DadosEnergia lerDadosINA219() {
   
   busvoltage = ina219.getBusVoltage_V();
   current_mA = ina219.getCurrent_mA();
-  power_mW = ina219.getPower_mW();
 
-  // Em caso de corrente negativa
   if (current_mA < 0) {
-    current_mA = std::fabs(current_mA); 
+    current_mA = abs(current_mA); 
   }
+
+  power_mW = busvoltage * current_mA;
 
   // Evitar ruido
   if (busvoltage < 1.2) {

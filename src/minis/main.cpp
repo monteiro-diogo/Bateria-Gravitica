@@ -3,7 +3,7 @@
 #include "ina226.h"
 #include "config.h"
 
-const int ID_MINI = 2; 
+const int ID_MINI = 1; 
 
 void setup() {
   Serial.begin(SERIAL_BAUD_RATE);
@@ -13,13 +13,11 @@ void setup() {
   }
 
   delay(DELAY_ARRANQUE_MS);
-
-  Serial.println("\n--- ARRANQUE DO MINI (ESP32-C3) ---");
   
   iniciarINA226();
   initComms(); 
   
-  Serial.println("Arrancou! A entrar no Loop de leitura...");
+  Serial.println("Mini " + String(ID_MINI) + " arrancou!");
 }
 
 // Loop principal: Lê os dados do sensor e envia por ESP-NOW de tempo a tempo definido em config.h

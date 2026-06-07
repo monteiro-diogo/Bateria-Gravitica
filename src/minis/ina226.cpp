@@ -26,7 +26,7 @@ bool iniciarINA226() {
   }
   
   if (count == 0) {
-    Serial.println("ERRO FISICO: Nenhum sensor encontrado! Verificar os fios e a alimentacao.");
+    Serial.println("[INA226] ERRO FISICO: Nenhum sensor encontrado! Verificar os fios e a alimentacao.");
     while(1) { delay(100); } // Pára a placa aqui para evitar loop de erros
   }
   Serial.println("---------------------------------");
@@ -34,7 +34,7 @@ bool iniciarINA226() {
 
   // Iniciar a Biblioteca
   if (!ina226.begin()) { 
-    Serial.println("ERRO: Biblioteca INA226 falhou no begin()!"); 
+    Serial.println("[INA226] ERRO: Biblioteca INA226 falhou no begin()!"); 
     while(1) { delay(10); } // Pára a placa
   }
   
@@ -56,8 +56,7 @@ DadosEnergia lerDadosINA226() {
   float corrente_A = ina226.getCurrent(); 
   dados.corrente_mA = abs(corrente_A * 1000.0); 
   
-  float potencia_W = ina226.getPower(); 
-  dados.potencia_mW = abs(potencia_W * 1000.0);
+  dados.potencia_mW = dados.tensao_V * dados.corrente_mA; // Potência em mW
 
   // Filtro de ruído (Podes descomentar quando o sistema estiver no local final)
   if (dados.tensao_V < 1.0) {

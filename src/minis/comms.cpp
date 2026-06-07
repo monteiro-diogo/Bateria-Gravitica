@@ -19,7 +19,7 @@ void initComms() {
 
   // Iniciar a rede ESP-NOW
   if (esp_now_init() != ESP_OK) {
-    Serial.println("ERRO: Falha ao inicializar ESP-NOW no Mini!");
+    Serial.println("[ESP-NOW] ERRO: Falha ao inicializar ESP-NOW no Mini!");
     return;
   }
 
@@ -32,11 +32,11 @@ void initComms() {
   peerInfo.encrypt = false;
 
   if (esp_now_add_peer(&peerInfo) != ESP_OK){
-    Serial.println("ERRO: Falha ao registar o Master (Peer)!");
+    Serial.println("[ESP-NOW] ERRO: Falha ao registar o Master (Peer)!");
     return;
   }
   
-  Serial.println("ESP-NOW Iniciado no Mini. Master emparelhado.");
+  Serial.println("[ESP-NOW] ESP-NOW Iniciado no Mini. Master emparelhado.");
 }
 
 void sendData(int id, float tensao_V, float corrente_mA, float potencia_mW) {
@@ -50,6 +50,6 @@ void sendData(int id, float tensao_V, float corrente_mA, float potencia_mW) {
   esp_err_t result = esp_now_send(MAC_ADDRESS, (uint8_t *) &meusDados, sizeof(meusDados));
    
   if (result != ESP_OK) {
-    Serial.println("ERRO: Ocorreu um problema a enviar os dados via ESP-NOW.");
+    Serial.println("[ESP-NOW] ERRO: Ocorreu um problema a enviar os dados via ESP-NOW.");
   }
 }
