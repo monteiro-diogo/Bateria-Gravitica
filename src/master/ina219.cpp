@@ -8,16 +8,18 @@ Adafruit_INA219 ina219;
 #define I2C_SCL_PIN 22
 
 // Função para iniciar o sensor INA219
-bool iniciarSensor() { 
+bool iniciarINA219() { 
   Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN);
+
   if (!ina219.begin()) {
     return false;
   }
+ 
   return true;
 }
 
 // Função para ler os dados do sensor e preencher a estrutura DadosEnergia
-DadosEnergia lerDadosSensor() {
+DadosEnergia lerDadosINA219() {
   float busvoltage = 0;
   float current_mA = 0;
   float power_mW = 0;
@@ -31,14 +33,14 @@ DadosEnergia lerDadosSensor() {
     current_mA = std::fabs(current_mA); 
   }
 
-  // Em caso de ruido
-  if (busvoltage < 1.0) {
+  // Evitar ruido
+  if (busvoltage < 1.2) {
     busvoltage = 0.0;
     current_mA = 0.0;
     power_mW = 0.0;
   }
 
-  // Preencher o pacote
+  // Preencher struct DadosEnergia
   DadosEnergia dados_master;
   dados_master.tensao_V = busvoltage;
   dados_master.corrente_mA = current_mA;
