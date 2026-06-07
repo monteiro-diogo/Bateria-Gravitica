@@ -8,7 +8,7 @@ INA226 ina226(0x44);
 #define I2C_SDA_PIN 4
 #define I2C_SCL_PIN 5
 
-bool iniciarSensor() {
+bool iniciarINA226() {
   Serial.println("\n--- A INICIAR O SENSOR INA226 ---");
   Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN);
 
@@ -43,11 +43,11 @@ bool iniciarSensor() {
   // No máximo colocamos 9A para evitar o risco de queimar o sensor, mesmo que o sistema possa chegar a 10A em picos.
   ina226.setMaxCurrentShunt(8.0, 0.009); 
   
-  Serial.println("SUCESSO: Sensor INA226 pronto!");
+  Serial.println("[INA226] Sensor iniciado com sucesso.");
   return true;
 }
 
-DadosEnergia lerDadosSensor() {
+DadosEnergia lerDadosINA226() {
   DadosEnergia dados;
   
   // Lê os valores da biblioteca
@@ -58,9 +58,6 @@ DadosEnergia lerDadosSensor() {
   
   float potencia_W = ina226.getPower(); 
   dados.potencia_mW = abs(potencia_W * 1000.0);
-
-  // Se falhar
-  // dados.potencia_mW = dados.tensao_V * dados.corrente_mA;
 
   // Filtro de ruído (Podes descomentar quando o sistema estiver no local final)
   if (dados.tensao_V < 1.0) {

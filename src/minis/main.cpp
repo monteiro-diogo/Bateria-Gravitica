@@ -16,7 +16,7 @@ void setup() {
 
   Serial.println("\n--- ARRANQUE DO MINI (ESP32-C3) ---");
   
-  iniciarSensor();
+  iniciarINA226();
   initComms(); 
   
   Serial.println("Arrancou! A entrar no Loop de leitura...");
@@ -28,7 +28,7 @@ void loop() {
   
   if (millis() - ultimoEnvio >= INTERVALO_TELEMETRIA_MS) {  
     ultimoEnvio = millis();
-    DadosEnergia dados = lerDadosSensor();
+    DadosEnergia dados = lerDadosINA226();
     sendData(ID_MINI, dados.tensao_V, dados.corrente_mA, dados.potencia_mW);
   }
 }
