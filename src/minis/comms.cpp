@@ -8,7 +8,14 @@ struct_message meusDados;
 esp_now_peer_info_t peerInfo;
 
 // Callback que nos avisa se o pacote chegou efetivamente ao Master
-void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {}
+void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
+  Serial.print("Envio para o Master: ");
+  if (status == ESP_NOW_SEND_SUCCESS) {
+    Serial.println("SUCESSO (Master recebeu)");
+  } else {
+    Serial.println("FALHA (Master nao encontrado)");
+  }
+}
 
 void initComms() {
   // Colocar o Mini em modo Station (necessário para o ESP-NOW neste caso)

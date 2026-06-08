@@ -5,6 +5,7 @@
 #include <WiFi.h>
 #include <WebServer.h>
 #include <LittleFS.h>
+#include <esp_wifi.h>
 
 WebServer server(80);
 
@@ -19,7 +20,7 @@ void iniciarWebServer() {
   }
 
   WiFi.mode(WIFI_AP_STA); // Força a placa a manter o modo Recetor ativo
-
+  esp_wifi_set_ps(WIFI_PS_NONE);
   if (String(password).length() > 0) {
     WiFi.softAP(ssid, password, 1); // Canal 1
   } else {
@@ -54,6 +55,17 @@ void iniciarWebServer() {
     server.send(200, "application/json", json);
   });
 
+  // Rota explícita para o index.html
+  server.on("/", HTTP_GET, []() {
+    File file = LittleFS.open("/index.html", "r");
+    if (!file) {
+      server.send(404, "text/plain", "ERRO: index.html inacessivel!");
+      return;
+    }
+    server.streamFile(file, "text/html");
+    file.close();
+  });
+  
   // Rota genérica para servir CSS, JS e imagens
   server.serveStatic("/", LittleFS, "/");
 

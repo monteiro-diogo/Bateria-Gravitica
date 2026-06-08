@@ -1,7 +1,6 @@
 #ifndef COMMS_H
 #define COMMS_H
 #include "protocol.h"
-#include "config.h"
 
 // Funções para iniciar e aceder aos dados guardados
 void initComms();
