@@ -14,24 +14,25 @@ void imprimirTelemetria() {
     Serial.println("------------------------------------");
     // Mostra as leituras do Master
     DadosEnergia dados_master = lerDadosINA219();
-    Serial.print("MASTER || ");
-    Serial.print(dados_master.tensao_V); Serial.print(" V | ");
-    Serial.print(dados_master.corrente_mA); Serial.print(" mA | ");
-    Serial.print(dados_master.potencia_mW); Serial.println(" mW");
+    Serial.printf("MASTER || %.2f V | %.2f mA | %.2f mW\n", dados_master.tensao_V, dados_master.corrente_mA, dados_master.potencia_mW);
 
     // Mostra as leituras do Mini 1
-    struct_message m1 = getDadosMini1();
     Serial.print("MINI 1 || "); 
-    Serial.print(m1.tensao_V); Serial.print(" V | ");
-    Serial.print(m1.corrente_mA); Serial.print(" mA | ");
-    Serial.print(m1.potencia_mW); Serial.println(" mW");
+    if (isMini1Online()) {
+      struct_message m1 = getDadosMini1();
+      Serial.printf("%.2f V | %.2f mA | %.2f mW\n", m1.tensao_V, m1.corrente_mA, m1.potencia_mW);
+    } else {
+      Serial.println("OFFLINE");
+    }
 
     // Mostra as leituras do Mini 2
-    struct_message m2 = getDadosMini2();
     Serial.print("MINI 2 || ");
-    Serial.print(m2.tensao_V); Serial.print(" V | ");
-    Serial.print(m2.corrente_mA); Serial.print(" mA | ");  
-    Serial.print(m2.potencia_mW); Serial.println(" mW");
+    if (isMini2Online()) {
+      struct_message m2 = getDadosMini2();
+      Serial.printf("%.2f V | %.2f mA | %.2f mW\n", m2.tensao_V, m2.corrente_mA, m2.potencia_mW);
+    } else {
+      Serial.println("OFFLINE");
+    }
     Serial.println("------------------------------------");
   }
 }

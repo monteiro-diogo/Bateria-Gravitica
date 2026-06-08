@@ -1,6 +1,7 @@
 #ifndef COMMS_H
 #define COMMS_H
 #include "protocol.h"
+#include "config.h"
 
 // Funções para iniciar e aceder aos dados guardados
 void initComms();
@@ -8,4 +9,7 @@ void initComms();
 struct_message getDadosMini1();
 struct_message getDadosMini2();
 
+// Verifica se os Minis estão online (último pacote recebido há menos de x segundos)
+bool isMini1Online();
+bool isMini2Online();
 #endif
