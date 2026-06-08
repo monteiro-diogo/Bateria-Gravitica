@@ -32,17 +32,6 @@ void iniciarWebServer() {
   Serial.print("Endereco do Painel: http://"); Serial.println(IP);
   Serial.println("------------------------------------");
 
-  // Configuração do servidor web para servir os ficheiros estáticos (HTML, CSS, JS) do LittleFS
-  server.on("/", HTTP_GET, []() {
-    File file = LittleFS.open("/index.html", "r");
-    if (!file) {
-      server.send(404, "text/plain", "ERRO: index.html inacessivel!");
-      return;
-    }
-    server.streamFile(file, "text/html");
-    file.close();
-  });
-
   // Rotas específicas de API (dados JSON)
   server.on("/dados", []() {
     DadosEnergia dados_master = lerDadosINA219();
@@ -65,21 +54,10 @@ void iniciarWebServer() {
     server.send(200, "application/json", json);
   });
 
-  // Rota explícita para o index.html
-  server.on("/", HTTP_GET, []() {
-    File file = LittleFS.open("/index.html", "r");
-    if (!file) {
-      server.send(404, "text/plain", "ERRO: index.html inacessivel!");
-      return;
-    }
-    server.streamFile(file, "text/html");
-    file.close();
-  });
-
   // Rota genérica para servir CSS, JS e imagens
   server.serveStatic("/", LittleFS, "/");
 
-  // 4. QUARTO: Salvaguarda global (Erro 404)
+  // Servidor não encontrado (Erro 404)
   server.onNotFound([]() {
     server.send(404, "text/plain", "ERRO: Ficheiro ou rota nao encontrada!");
   });
@@ -87,7 +65,7 @@ void iniciarWebServer() {
   server.begin();
 }
 
-// Função para processar as requisições do servidor web (deve ser chamada no loop principal)
+// Função para processar as requisições do servidor web (chamada no loop principal)
 void processarWebServer() {
   server.handleClient(); 
 }
