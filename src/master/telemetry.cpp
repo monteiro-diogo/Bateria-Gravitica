@@ -25,6 +25,12 @@ void imprimirTelemetria() {
     struct_message m2 = getDadosMini2();
     Serial.printf("MINI 2 || %.2f V | %.2f mA | %.2f mW\n", m2.tensao_V, m2.corrente_mA, m2.potencia_mW);
     
+    float distancia = lerDistanciaCm();
+    if (distancia >= 0) {
+      Serial.printf("DISTANCIA || %.2f cm\n", distancia);
+    } else {
+      Serial.println("DISTANCIA || Erro na leitura");
+    }
     Serial.println("------------------------------------");
   }
 }
