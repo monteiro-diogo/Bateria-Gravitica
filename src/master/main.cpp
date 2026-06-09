@@ -4,6 +4,7 @@
 #include "config.h"
 #include "telemetry.h"
 #include "hardware.h"
+#include "servo.h"
 
 // Configurações iniciais do sistema
 void setup() {
@@ -13,7 +14,9 @@ void setup() {
   iniciarWebServer(); // Inicia a rede AP
   initComms();        // Inicia o recetor ESP-NOW 
   iniciarHardware(); // Inicia os sensores locais 
-  
+
+  // testarServo(); // Testa o servo (verificado)
+
   Serial.println("Sistema online!");
 }
 
