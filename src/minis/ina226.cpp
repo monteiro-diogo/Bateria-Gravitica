@@ -5,6 +5,16 @@
 // A biblioteca do Rob Tillaart exige o endereço I2C
 INA226 ina226(0x44); 
 
+/* Ligação do INA226:
+- SDA: GPIO 4
+- SCL: GPIO 5
+- Alimentação: 3V3 e GND comum com a ESP32
+- V+: Lado da fonte
+- V-: Lado da carga (para medir a corrente que passa pela carga em série)
+- VBUS: Positivo da fonte (para medir a tensão do barramento) = V+
+*/
+
+
 #define I2C_SDA_PIN 4
 #define I2C_SCL_PIN 5
 

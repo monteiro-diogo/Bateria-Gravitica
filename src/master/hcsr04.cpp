@@ -1,6 +1,12 @@
 #include "hcsr04.h"
 #include <Arduino.h>
 
+/* Ligação do HC-SR04:
+- Trigger: GPIO 5
+- Echo: GPIO 18
+- Alimentação: 5V e GND comum com a ESP32
+*/
+
 // Definição dos pinos do sensor ultrassónico HC-SR04
 #define TRIG_PIN 5
 #define ECHO_PIN 18
@@ -23,18 +29,16 @@ float lerDistanciaCm() {
   // Medir o tempo do eco (Timeout de 30ms para não bloquear a ESP32 muito tempo)
   long duration = pulseIn(ECHO_PIN, HIGH, 30000);
 
-  // Validação e tratamento de erros (timeout)
-  if (duration == 0) {
-    Serial.println("[HC-SR04] ERRO: Timeout na leitura (objeto fora de alcance ou erro de ligacao).");
-    return -1.0; 
-  }
-
   // Calcular a distância (velocidade do som: 0.0343 cm/us)
   float distancia = (duration * 0.0343) / 2.0;
 
+  // Validação e tratamento de erros (timeout)
+  if (duration == 0) {
+    return -1.0; 
+  }
+
   // Filtro de segurança para evitar falsos positivos
   if (distancia > 400.0) {
-    Serial.println("[HC-SR04] ERRO: Leitura fora do alcance (400 cm).");
     return -1.0; 
   }
 
