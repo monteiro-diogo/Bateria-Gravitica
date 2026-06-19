@@ -27,7 +27,7 @@ void loop() {
   // Exemplo de uso:
   // Aqui você deve decidir quando o motor deve rodar.
   // Por exemplo, usando um valor vindo de uma variável global ou comando:
-  // motorIBT2(50, true); // Roda a 50% no sentido horário
+   motorIBT2(50, true); 
   
   delay(10); // Pequena pausa para estabilidade do processador
 }
