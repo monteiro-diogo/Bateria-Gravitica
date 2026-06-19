@@ -16,8 +16,8 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
     memcpy(&dadosRecebidos, incomingData, sizeof(dadosRecebidos));
     
     // Debug para confirmar na consola do Master que o rádio captou o sinal
-    Serial.print("[ESP-NOW] ESP-C3 Mini a comunicar: ");
-    Serial.println(dadosRecebidos.id);
+   // Serial.print("[ESP-NOW] ESP-C3 Mini a comunicar: ");
+   // Serial.println(dadosRecebidos.id);
 
     if (dadosRecebidos.id == 1) {
       ultimaLeituraMini1 = dadosRecebidos;
