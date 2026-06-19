@@ -5,23 +5,29 @@
 #include "telemetry.h"
 #include "hardware.h"
 #include "sg90.h"
+#include "ibt2.h" // Incluindo o seu driver
 
-// Configurações iniciais do sistema
 void setup() {
   Serial.begin(SERIAL_BAUD_RATE);
   delay(DELAY_ARRANQUE_MS);
 
-  iniciarWebServer(); // Inicia a rede AP
-  initComms();        // Inicia o recetor ESP-NOW 
-  iniciarHardware(); // Inicia os sensores locais 
+  // Inicializações
+  iniciarIBT2();      // <--- Adicionado: Inicia os pinos e canais PWM do IBT2
+  iniciarWebServer(); 
+  initComms(); 
+  iniciarHardware(); 
 
   Serial.println("Sistema online!");
 }
 
-// Loop principal
 void loop() {
-  processarWebServer(); // Mantém o servidor web a funcionar (responder a pedidos HTTP)
-  imprimirTelemetria(); // Imprime os dados do Master e dos Minis na consola série a cada segundo
+  processarWebServer(); 
+  imprimirTelemetria(); 
 
-  return;
+  // Exemplo de uso:
+  // Aqui você deve decidir quando o motor deve rodar.
+  // Por exemplo, usando um valor vindo de uma variável global ou comando:
+  // motorIBT2(50, true); // Roda a 50% no sentido horário
+  
+  delay(10); // Pequena pausa para estabilidade do processador
 }
