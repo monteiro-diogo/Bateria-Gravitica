@@ -20,8 +20,7 @@ void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
 void initComms() {
   // Colocar o Mini em modo Station (necessário para o ESP-NOW neste caso)
   WiFi.mode(WIFI_STA);
-  
-  // FORÇAR O CANAL 1 (Obrigatório porque o Master está no canal 1 devido ao softAP)
+  WiFi.disconnect();
   esp_wifi_set_channel(1, WIFI_SECOND_CHAN_NONE);
 
   // Iniciar a rede ESP-NOW
@@ -32,6 +31,9 @@ void initComms() {
 
   // Registar a função que verifica se o envio teve sucesso
   esp_now_register_send_cb(OnDataSent);
+
+  // Limpar a estrutura do peer antes de preencher
+  memset(&peerInfo, 0, sizeof(peerInfo));
 
   // Registar o Master como destino (Peer)
   memcpy(peerInfo.peer_addr, MAC_ADDRESS, 6);

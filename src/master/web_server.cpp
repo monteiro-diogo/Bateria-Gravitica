@@ -19,12 +19,13 @@ void iniciarWebServer() {
     return;
   }
 
-  WiFi.mode(WIFI_AP_STA); // Força a placa a manter o modo Recetor ativo
+  WiFi.mode(WIFI_AP); 
   esp_wifi_set_ps(WIFI_PS_NONE);
+  
   if (String(password).length() > 0) {
-    WiFi.softAP(ssid, password, 1); // Canal 1
+    WiFi.softAP(ssid, password, 1); 
   } else {
-    WiFi.softAP(ssid);
+    WiFi.softAP(ssid, NULL, 1); 
   }
 
   IPAddress IP = WiFi.softAPIP();
