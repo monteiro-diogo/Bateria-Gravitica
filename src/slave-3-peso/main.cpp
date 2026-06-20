@@ -6,11 +6,11 @@
 const int ID_MINI = 3;
 
 // Definição dos pinos para os sensores na ESP32-C3 Super Mini
-#define TRIG_CIMA 0
-#define ECHO_CIMA 1
+#define TRIG_CIMA 32
+#define ECHO_CIMA 33
 
-#define TRIG_BAIXO 3
-#define ECHO_BAIXO 10
+#define TRIG_BAIXO 25
+#define ECHO_BAIXO 26
 
 // Instanciar os dois sensores
 HCSR04 sensorCima(TRIG_CIMA, ECHO_CIMA);
