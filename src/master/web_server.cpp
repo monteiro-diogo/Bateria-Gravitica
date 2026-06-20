@@ -19,7 +19,7 @@ void iniciarWebServer() {
     return;
   }
 
-  WiFi.mode(WIFI_AP); 
+  WiFi.mode(WIFI_AP_STA); 
   esp_wifi_set_ps(WIFI_PS_NONE);
   
   if (String(password).length() > 0) {
@@ -28,6 +28,8 @@ void iniciarWebServer() {
     WiFi.softAP(ssid, NULL, 1); 
   }
 
+
+  
   IPAddress IP = WiFi.softAPIP();
   Serial.println("------------------------------------");
   Serial.print("Rede criada: "); Serial.println(ssid);
