@@ -66,7 +66,7 @@ void motorIBT2(int percentagem, bool sentidoHorario) {
     
     // 3. PROTEÇÃO POR TENSÃO (Regulação Dinâmica)
     float tensaoAtual = (m1.tensao_V < 1.0) ? 1.0 : m1.tensao_V;
-    float fatorCorrecao = 7.0 / tensaoAtual;
+    float fatorCorrecao = 11.0 / tensaoAtual;
 
     float percentagemCorrigida = (float)percentagem * fatorCorrecao;
     if (percentagemCorrigida > 100.0) percentagemCorrigida = 100.0;
