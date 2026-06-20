@@ -88,3 +88,39 @@ void testarIBT2() {
     motorIBT2(30, true);
     delay(5000); 
 }
+
+// ========================================================================
+// --- CÓDIGO DO SEGUNDO IBT-2 PARA DISSIPAÇÃO (NÃO MEXE NO MOTOR) ---
+// ========================================================================
+
+#define DISSIP_RPWM_PIN  32  // Novo pino PWM para a Dissipação (Ligar ao RPWM do 2º IBT-2)
+#define DISSIP_CANAL     2   // Canal 2 (Os canais 0 e 1 já são do motor)
+
+/* Ligação do 2º Driver IBT-2 (Dissipação):
+- RPWM: GPIO 32
+- LPWM: Ligado diretamente ao GND da ESP32 (não precisa de pino)
+- R_EN e L_EN: Ligados juntos ao GPIO 33
+- V+ / V- (Saída de Potência): Ligado à sua Resistência de Cimento de 10R
+*/
+
+bool iniciarDissipacao() {
+    // Como o pino 27 já foi configurado como OUTPUT e HIGH no iniciarIBT2(),
+    // aqui já não precisas de fazer mais nada com ele.
+    
+    // Configura apenas o novo canal PWM
+    ledcSetup(DISSIP_CANAL, FREQ_HZ, RESOLUTION_BITS);
+    ledcAttachPin(DISSIP_RPWM_PIN, DISSIP_CANAL);
+    
+    ledcWrite(DISSIP_CANAL, 0); 
+    Serial.println("[DISSIPAÇÃO] Segundo IBT-2 configurado no PWM GPIO 32 (Enable partilhado no GPIO 27).");
+    return true;
+}
+
+void controlarDissipacao(int percentagem) {
+    if (percentagem < 0) percentagem = 0;
+    if (percentagem > 100) percentagem = 100;
+
+    // Mapeia 0-100% para 0-255 (Resolução de 8 bits)
+    int duty = map(percentagem, 0, 100, 0, 255);
+    ledcWrite(DISSIP_CANAL, duty);
+}
