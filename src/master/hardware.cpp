@@ -1,14 +1,14 @@
-#include "ina219.h"
+#include "ina226.h"
 #include "sg90.h"
 #include "ibt2.h"
 #include <Arduino.h>
 
 
 void iniciarHardware() {
-  // INA219
-  if (!iniciarINA219()) {
-    Serial.println("[INA219] ERRO: Falha ao iniciar INA219!");
-  } else { Serial.println("[INA219] Iniciado com sucesso."); }
+  // INA226
+  if (!iniciarINA226()) {
+    Serial.println("[INA226] ERRO: Falha ao iniciar INA219!");
+  } else { Serial.println("[INA226] Iniciado com sucesso."); }
 
 
   // SG90

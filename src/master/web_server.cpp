@@ -1,5 +1,5 @@
 #include "web_server.h"
-#include "ina219.h"
+#include "ina226.h"
 #include "segredos.h"
 #include "comms.h"
 #include <WiFi.h>
@@ -38,7 +38,7 @@ void iniciarWebServer() {
 
   // Rotas específicas de API (dados JSON)
   server.on("/dados", []() {
-    DadosEnergia dados_master = lerDadosINA219();
+    DadosEnergia dados_master = lerDadosINA226();
     struct_message mini1 = getDadosMini1();
     struct_message mini2 = getDadosMini2();
 

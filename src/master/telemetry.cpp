@@ -1,7 +1,7 @@
 #include "telemetry.h"
 #include <Arduino.h>
 #include "comms.h"
-#include "ina219.h"
+#include "ina226.h"
 #include "config.h"
 
 // Função para imprimir todas as leituras (Master + Minis) na consola série
@@ -13,7 +13,7 @@ void imprimirTelemetria() {
     
     Serial.println("------------------------------------");
     // Mostra as leituras do Master
-    DadosEnergia dados_master = lerDadosINA219();
+    DadosEnergia dados_master = lerDadosINA226();
     Serial.printf("MASTER || %.2f V | %.2f mA | %.2f mW\n", dados_master.tensao_V, dados_master.corrente_mA, dados_master.potencia_mW);
 
     // Mostra as leituras do Mini 1

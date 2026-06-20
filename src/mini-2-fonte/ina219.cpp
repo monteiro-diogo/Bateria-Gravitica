@@ -5,15 +5,15 @@
 Adafruit_INA219 ina219;
 
 /* Ligação do INA219:
-- SDA: GPIO 21
-- SCL: GPIO 22
+- SDA: GPIO 4
+- SCL: GPIO 5
 - Alimentação: 3v3 e GND comum com a ESP32
 - V+: Lado da fonte
 - V-: Lado da carga (para medir a corrente que passa pela carga em série)
 */
 
-#define I2C_SDA_PIN 21
-#define I2C_SCL_PIN 22
+#define I2C_SDA_PIN 4
+#define I2C_SCL_PIN 5
 
 // Função para iniciar o sensor INA219
 bool iniciarINA219() { 

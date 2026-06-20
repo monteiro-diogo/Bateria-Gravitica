@@ -33,24 +33,12 @@ void loop() {
   processarWebServer(); 
   imprimirTelemetria(); 
 
-  // Busca os dados do Mini 3 no topo do loop para usar na trava e nos prints
+  // Travagem por altura
   struct_message m3 = getDadosMini3(); 
 
-  // --- IMPRESSÃO DAS DISTÂNCIAS DO PROTOCOLO ---
-  if (millis() - ultimoPrintDistancias >= 1000) {
-    ultimoPrintDistancias = millis();
-    
-    Serial.println(">>>> [DISTÂNCIAS MINI BATERIA (ID 3)] <<<<");
-    Serial.printf("Distância Acima: %.2f cm\n", m3.distancia_cima_cm);
-    Serial.printf("Distância Abaixo: %.2f cm\n", m3.distancia_baixo_cm);
-    Serial.println("----------------------------------------");
-  }
-
-  // --- LÓGICA DA TRAVA DE EMERGÊNCIA (OBSTÁCULO < 10 CM) ---
-  // Verifica se alguma distância é menor que 10cm (e maior que 0 para ignorar falsas leituras do sensor)
-  bool perigoCima = (m3.distancia_cima_cm > 0.0 && m3.distancia_cima_cm <= 10.0);
-  bool perigoBaixo = (m3.distancia_baixo_cm > 0.0 && m3.distancia_baixo_cm <= 10.0);
-  bool travaAtiva = (perigoCima || perigoBaixo);
+  bool maxCima = (m3.distancia_cima_cm > 0.0 && m3.distancia_cima_cm <= 10.0);
+  bool maxBaixo = (m3.distancia_baixo_cm > 0.0 && m3.distancia_baixo_cm <= 10.0);
+  bool travaAtiva = (maxCima || maxBaixo);
 
   static bool travaAnterior = false; // Guarda o estado anterior para não inundar o serial
 
@@ -82,7 +70,7 @@ void loop() {
       if (tempoAtual - cronometroMotor >= 20000) {
         motorDeveRodar = false;
         cronometroMotor = tempoAtual; 
-        Serial.println("\n>>>> [CICLO MOTOR] 20s passaram. Parando o motor por 5s... <<<<\n");
+        Serial.println("\n [MOTOR] 20s passaram. Parando o motor por 5s...\n");
       }
     } 
     else {
@@ -91,7 +79,7 @@ void loop() {
       if (tempoAtual - cronometroMotor >= 5000) {
         motorDeveRodar = true;
         cronometroMotor = tempoAtual; 
-        Serial.println("\n>>>> [CICLO MOTOR] 5s passaram. Ativando o motor por 20s... <<<<\n");
+        Serial.println("\n [MOTOR] 5s passaram. Ativando o motor por 20s... \n");
       }
     }
   }
