@@ -9,6 +9,10 @@ typedef struct struct_message {
   float tensao_V;
   float corrente_mA;
   float potencia_mW;
+  float distancia_cima_cm;
+  float distancia_baixo_cm;
 } struct_message;
+
+
 
 #endif
