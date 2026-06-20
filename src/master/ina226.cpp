@@ -6,8 +6,8 @@
 INA226 ina226(0x44); 
 
 /* Ligação do INA226:
-- SDA: GPIO 4
-- SCL: GPIO 5
+- SDA: GPIO 21
+- SCL: GPIO 22
 - Alimentação: 3V3 e GND comum com a ESP32
 - V+: Lado da fonte
 - V-: Lado da carga (para medir a corrente que passa pela carga em série)
@@ -73,6 +73,6 @@ DadosEnergia lerDadosINA226() {
     dados.corrente_mA = 0.0;
     dados.potencia_mW = 0.0;
   }
-
+  
   return dados;
 }
