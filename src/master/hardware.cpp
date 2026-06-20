@@ -1,5 +1,4 @@
 #include "ina219.h"
-#include "hcsr04.h"
 #include "sg90.h"
 #include "ibt2.h"
 #include <Arduino.h>
@@ -11,10 +10,6 @@ void iniciarHardware() {
     Serial.println("[INA219] ERRO: Falha ao iniciar INA219!");
   } else { Serial.println("[INA219] Iniciado com sucesso."); }
 
-  // HC-SR04
-  if (!iniciarUltrassom()) {
-    Serial.println("[HC-SR04] ERRO: Falha ao iniciar Ultrassom!");
-  } else { Serial.println("[HC-SR04] Iniciado com sucesso."); }
 
   // SG90
   if (!iniciarSG90()) {
