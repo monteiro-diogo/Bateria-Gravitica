@@ -2,7 +2,6 @@
 #include <Arduino.h>
 #include "comms.h"
 #include "ina219.h"
-#include "hcsr04.h"
 #include "config.h"
 
 // Função para imprimir todas as leituras (Master + Minis) na consola série
@@ -24,13 +23,11 @@ void imprimirTelemetria() {
     // Mostra as leituras do Mini 2
     struct_message m2 = getDadosMini2();
     Serial.printf("MINI 2 || %.2f V | %.2f mA | %.2f mW\n", m2.tensao_V, m2.corrente_mA, m2.potencia_mW);
-    
-    float distancia = lerDistanciaCm();
-    if (distancia >= 0) {
-      Serial.printf("DISTANCIA || %.2f cm\n", distancia);
-    } else {
-      Serial.println("DISTANCIA || Erro na leitura");
-    }
+
+    // Mostra as leituras do Mini 3
+    struct_message m3 = getDadosMini3();
+    Serial.printf("MINI 3 || %.2f cm | %.2f cm |\n", m3.distancia_cima_cm, m3.distancia_baixo_cm);
+
     Serial.println("------------------------------------");
   }
 }

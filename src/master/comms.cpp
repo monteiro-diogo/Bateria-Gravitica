@@ -4,8 +4,9 @@
 #include "config.h"
 
 // Variáveis para guardar em memória a última leitura de cada Mini
-struct_message ultimaLeituraMini1 = {1, 0.0, 0.0, 0.0};
-struct_message ultimaLeituraMini2 = {2, 0.0, 0.0, 0.0};
+struct_message ultimaLeituraMini1 = {1, 0.0, 0.0, 0.0, 0.0, 0.0};
+struct_message ultimaLeituraMini2 = {2, 0.0, 0.0, 0.0, 0.0, 0.0};
+struct_message ultimaLeituraMini3 = {3, 0.0, 0.0, 0.0, 0.0, 0.0};
 
 // Função Callback: O que fazer quando uma mensagem chega do "ar"
 void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
@@ -23,6 +24,8 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
       ultimaLeituraMini1 = dadosRecebidos;
     } else if (dadosRecebidos.id == 2) {
       ultimaLeituraMini2 = dadosRecebidos;
+    } else if (dadosRecebidos.id == 3) {
+      ultimaLeituraMini3 = dadosRecebidos;
     }
   } else {
     Serial.print("[ESP-NOW] ERRO: Tamanho de pacote invalido recebido: ");
@@ -45,3 +48,4 @@ void initComms() {
 
 struct_message getDadosMini1() { return ultimaLeituraMini1; }
 struct_message getDadosMini2() { return ultimaLeituraMini2; }
+struct_message getDadosMini3() { return ultimaLeituraMini3; }

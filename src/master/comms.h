@@ -7,8 +7,6 @@ void initComms();
 // Funções "Getter" para o web_server.cpp ir buscar os dados de forma segura
 struct_message getDadosMini1();
 struct_message getDadosMini2();
+struct_message getDadosMini3();
 
-// Verifica se os Minis estão online (último pacote recebido há menos de x segundos)
-bool isMini1Online();
-bool isMini2Online();
 #endif
