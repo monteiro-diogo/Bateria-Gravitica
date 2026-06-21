@@ -8,7 +8,7 @@
 */
 
 #define PIN_PWM 15 
-#define SERVO_CANAL 0 // Canal PWM
+#define SERVO_CANAL 5 // Canal PWM
 
 bool iniciarSG90() {
   ledcSetup(SERVO_CANAL, 50, 16); // 50Hz (padrão servo), 16 bits
