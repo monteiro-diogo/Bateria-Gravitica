@@ -35,6 +35,8 @@ void iniciarWebServer() {
   Serial.print("Rede criada: "); Serial.println(ssid);
   Serial.print("Endereco do Painel: http://"); Serial.println(IP);
   Serial.println("------------------------------------");
+  Serial.print("Endereco MAC do ESP32: "); Serial.println(WiFi.macAddress());
+  Serial.print("Endereco MAC do Access Point: "); Serial.println(WiFi.softAPmacAddress());
 
   // Rotas específicas de API (dados JSON)
   server.on("/dados", []() {
