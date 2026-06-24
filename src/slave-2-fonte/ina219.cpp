@@ -32,27 +32,22 @@ DadosEnergia lerDadosINA219() {
   float current_mA = 0;
   float power_mW = 0;
   
-  busvoltage = ina219.getBusVoltage_V();
-  current_mA = ina219.getCurrent_mA();
-
-  if (current_mA < 0) {
-    current_mA = abs(current_mA); 
-  }
+  busvoltage = abs(ina219.getBusVoltage_V());
+  current_mA = abs(ina219.getCurrent_mA()); 
 
   power_mW = busvoltage * current_mA;
 
-  // Evitar ruido
-  if (busvoltage < 1.2) {
+  if (busvoltage < 0.02) {
     busvoltage = 0.0;
     current_mA = 0.0;
     power_mW = 0.0;
   }
 
   // Preencher struct DadosEnergia
-  DadosEnergia dados_master;
-  dados_master.tensao_V = busvoltage;
-  dados_master.corrente_mA = current_mA;
-  dados_master.potencia_mW = power_mW;
+  DadosEnergia dados;
+  dados.tensao_V = busvoltage;
+  dados.corrente_mA = current_mA;
+  dados.potencia_mW = power_mW;
 
-  return dados_master;
+  return dados;
 }

@@ -58,21 +58,26 @@ bool iniciarINA226() {
 
 DadosEnergia lerDadosINA226() {
   DadosEnergia dados;
-  
+  float busvoltage = 0;
+  float current_mA = 0;
+  float power_mW = 0;
+
   // Lê os valores da biblioteca
-  dados.tensao_V = ina226.getBusVoltage();
-  
-  float corrente_A = ina226.getCurrent(); 
-  dados.corrente_mA = abs(corrente_A * 1000.0); 
-  
-  dados.potencia_mW = dados.tensao_V * dados.corrente_mA; // Potência em mW
+  busvoltage = abs(ina226.getBusVoltage());
+  current_mA = abs(ina226.getCurrent()) * 1000.0; // Converter para mA
+  power_mW = busvoltage * current_mA; // Potência em mW
+
+  // Preencher struct DadosEnergia
+  dados.tensao_V = busvoltage;
+  dados.corrente_mA = current_mA;
+  dados.potencia_mW = power_mW;
 
   // Filtro de ruído (Podes descomentar quando o sistema estiver no local final)
-  if (dados.tensao_V < 1.0) {
-    dados.tensao_V = 0.0;
-    dados.corrente_mA = 0.0;
-    dados.potencia_mW = 0.0;
+  if (busvoltage < 0.02) {
+    busvoltage = 0.0;
+    current_mA = 0.0;
+    power_mW = 0.0;
   }
-  
+
   return dados;
 }
