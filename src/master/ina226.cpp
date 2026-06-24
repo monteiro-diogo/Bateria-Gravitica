@@ -67,17 +67,17 @@ DadosEnergia lerDadosINA226() {
   current_mA = abs(ina226.getCurrent()) * 1000.0; // Converter para mA
   power_mW = busvoltage * current_mA; // Potência em mW
 
-  // Preencher struct DadosEnergia
-  dados.tensao_V = busvoltage;
-  dados.corrente_mA = current_mA;
-  dados.potencia_mW = power_mW;
-
   // Filtro de ruído
   if (busvoltage < 0.05) {
     busvoltage = 0.0;
     current_mA = 0.0;
     power_mW = 0.0;
   }
+  
+  // Preencher struct DadosEnergia
+  dados.tensao_V = busvoltage;
+  dados.corrente_mA = current_mA;
+  dados.potencia_mW = power_mW;
 
   return dados;
 }

@@ -21,7 +21,7 @@
 #define RESOLUTION_BITS 8 
 
 // Definições de segurança
-const int MAX_DUTY = 120; // Limite de 40% (102/255) para proteger motor 12V em fonte 24V
+const int MAX_DUTY = 244; // Limite de ~92% (244/255) para dar máx 11V com fonte de 12V
 const float CORRENTE_MAXIMA_STALL_MA = 2000.0; // Limite de 2A para detectar bloqueio mecânico valor poderá ser ajustado 
 
 bool iniciarIBT2() {
@@ -66,6 +66,8 @@ void motorIBT2(int percentagem, bool sentidoHorario) {
     
     // 3. PROTEÇÃO POR TENSÃO (Regulação Dinâmica)
     float tensaoAtual = (m1.tensao_V < 1.0) ? 1.0 : m1.tensao_V;
+    
+    // Ajustado para o novo alvo de 12V em vez de 11V
     float fatorCorrecao = 12.0 / tensaoAtual;
 
     float percentagemCorrigida = (float)percentagem * fatorCorrecao;
