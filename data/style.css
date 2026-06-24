@@ -12,27 +12,58 @@ h1 {
   color: #f8fafc; 
   font-weight: 600;
   letter-spacing: 0.5px;
+  margin-bottom: 30px;
 }
 
-/* --- Estrutura da Grelha --- */
-.grid-container { 
-  display: grid; 
-  grid-template-columns: repeat(3, 1fr); 
-  gap: 24px; 
+/* --- Estrutura do Painel (Flexbox) --- */
+.dashboard-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap; 
+  gap: 24px;       
   max-width: 1200px; 
   margin: 0 auto; 
+  align-items: stretch; /* Força as colunas da esquerda e da direita a terem a mesma altura total */
 }
 
-/* --- Cartões (Colunas) --- */
+/* --- Cartões (Colunas da Esquerda) --- */
 .coluna { 
-  background-color: #1e293b; /* Fundo dos cartões ligeiramente mais claro que o body */
+  flex: 1;                    
+  min-width: 280px;           
+  background-color: #1e293b;  
   border-radius: 8px; 
   padding: 20px; 
   text-align: center;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2); /* Sombra subtil para dar profundidade */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2); 
+  display: flex;
+  flex-direction: column; /* Permite alinhar o conteúdo interno verticalmente */
 }
 
-/* Substituímos a borda completa por uma linha de topo grossa (estilo dashboard profissional) */
+/* Coluna Direita: Agrupa o Gráfico e o Estado verticalmente */
+.coluna-direita {
+  flex: 1.5;                  /* Dá mais espaço horizontal ao gráfico */
+  display: flex;
+  flex-direction: column;     /* Empilha o gráfico e o estado */
+  gap: 24px;                  /* Espaçamento vertical entre os dois blocos da direita */
+  min-width: 280px;
+}
+
+/* Cartão do Gráfico: Comportamento flexível */
+.container-grafico { 
+  background-color: #1e293b;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+  border-top: 4px solid #6366f1; /* Linha de topo Índigo para o Gráfico */
+  width: 100%; 
+  box-sizing: border-box; 
+  flex: 1;                    /* Ocupa todo o espaço vertical disponível na direita */
+  display: flex;
+  flex-direction: column;
+} 
+
+/* Linhas de topo estilo dashboard profissional para as tabelas */
 .borda-rede    { border-top: 4px solid #f59e0b; } /* Laranja âmbar */
 .borda-cidade  { border-top: 4px solid #3b82f6; } /* Azul limpo */
 .borda-bateria { border-top: 4px solid #10b981; } /* Verde esmeralda */
@@ -49,10 +80,11 @@ h2 {
 
 /* --- Tabelas de Telemetria --- */
 .table-container {
-  height: 400px;
+  height: 400px; /* Esta altura fixa dita o tamanho vertical de todo o painel */
   overflow-y: auto;
   border-radius: 6px;
   background: #0f172a; 
+  flex: 1;
 }
 
 /* Estilo barra de scroll */
@@ -83,19 +115,28 @@ th {
 
 td {
   font-size: 1.05em;
-  font-family: ui-monospace, SFMono-Regular, Consolas, monospace; /* Apenas nos números para alinhar os decimais */
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace; /* Alinhamento perfeito de decimais */
   color: #cbd5e1;
+}
+
+/* --- Contentor Interno do Gráfico --- */
+.chart-container {
+  width: 100%;
+  flex: 1;                    /* Faz o gráfico preencher o espaço restante do cartão */
+  position: relative;         /* Essencial para a responsividade do Chart.js */
+  min-height: 200px;          /* Garante visibilidade mínima se a janela encolher */
 }
 
 /* --- Indicador de Estado Global --- */
 .status-container {
-  max-width: 1200px;
-  margin: 30px auto;
   background-color: #1e293b;
   border-radius: 8px;
   padding: 20px;
   text-align: center;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  box-sizing: border-box;
+  border-top: 4px solid #475569; /* Linha superior cinza discreta para fechar o bloco */
 }
 
 #estado_txt { 
@@ -105,11 +146,6 @@ td {
   text-transform: uppercase; 
   margin-top: 8px;
   letter-spacing: 1px;
-}
-
-/* --- Responsividade --- */
-@media (max-width: 800px) {
-  .grid-container { grid-template-columns: 1fr; }
 }
 
 /* --- Animação de Piscar para Nova Linha --- */

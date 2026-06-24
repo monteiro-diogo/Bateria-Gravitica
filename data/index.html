@@ -5,28 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Telemetria do Sistema</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <h1>Painel de Controlo</h1>
   
-  <div class="grid-container">
-    <div class="coluna borda-rede">
-      <h2>Rede</h2>
-      <div class="table-container">
-        <table id="tabela_rede">
-          <thead>
-            <tr>
-              <th>Tensão (V)</th>
-              <th>Corrente (mA)</th>
-              <th>Potência (mW)</th>
-            </tr>
-          </thead>
-          <tbody>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
+  <div class="dashboard-container">
+    
     <div class="coluna borda-cidade">
       <h2>Cidade</h2>
       <div class="table-container">
@@ -60,13 +45,21 @@
         </table>
       </div>
     </div>
-  </div>
 
-  <div class="status-container">
-    <span style="font-size: 0.8em; color: #888; text-transform: uppercase;">Estado do Sistema</span>
-    <div id="estado_txt">A CARREGAR</div>
-  </div>
+    <div class="coluna-direita">
+      
+      <div class="coluna container-grafico">
+        <h2>Evolução de Valores</h2>
+        <div class="chart-container">
+          <canvas id="grafico_valores"></canvas>
+        </div>
+      </div>
 
-  <script src="scripts.js"></script>
+      <div class="status-container">
+        <span style="font-size: 0.8em; color: #888; text-transform: uppercase;">Estado do Sistema</span>
+        <div id="estado_txt">A CARREGAR</div>
+      </div>
+
+    </div> </div> <script src="scripts.js"></script>
 </body>
 </html>

@@ -36,6 +36,10 @@ const unsigned long TEMPO_ALIVIO_TRAVA_MS = 1500; // 1.5 segundos a subir para s
 bool quedaConcluida = false; // Proteção para não ficar a ler o ultrassom em loop
 int ultimoAnguloServo = -1;  // Memória do servo (Anti-Spam)
 
+String getEstadoSistema() {
+  return String(nomesFases[faseAtual]);
+}
+
 void setup() {
   Serial.begin(SERIAL_BAUD_RATE);
   while (!Serial) { delay(10); } 

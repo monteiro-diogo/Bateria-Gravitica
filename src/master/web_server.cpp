@@ -43,7 +43,8 @@ void iniciarWebServer() {
     DadosEnergia dados_master = lerDadosINA226();
     struct_message mini1 = getDadosMini1();
     struct_message mini2 = getDadosMini2();
-
+    extern String getEstadoSistema();
+    
     String json = "{";
     json += "\"v_master\":" + String(dados_master.tensao_V) + ",";
     json += "\"c_master\":" + String(dados_master.corrente_mA) + ",";
@@ -54,7 +55,7 @@ void iniciarWebServer() {
     json += "\"v_mini2\":" + String(mini2.tensao_V) + ",";
     json += "\"c_mini2\":" + String(mini2.corrente_mA) + ",";
     json += "\"p_mini2\":" + String(mini2.potencia_mW) + ",";
-    json += "\"estado\":\"Online\"";
+    json += "\"estado\":\"" + getEstadoSistema() + "\"";
     json += "}";
     
     server.send(200, "application/json", json);
