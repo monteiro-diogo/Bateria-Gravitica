@@ -10,8 +10,8 @@
 - Alimentação: 5V (VCC) e GND Comum com a ESP32
 */
 
-#define RPWM_PIN 25 
-#define LPWM_PIN 26
+#define LPWM_PIN 25 
+#define RPWM_PIN 26
 #define EN_PIN   27
 
 // Definição dos canais PWM (exigidos na versão antiga do core ESP32)

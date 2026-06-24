@@ -37,7 +37,7 @@ DadosEnergia lerDadosINA219() {
 
   power_mW = busvoltage * current_mA;
 
-  if (busvoltage < 0.02) {
+  if (busvoltage < 0.05) {
     busvoltage = 0.0;
     current_mA = 0.0;
     power_mW = 0.0;

@@ -21,5 +21,10 @@ void iniciarHardware() {
     Serial.println("[IBT-2] ERRO: Falha ao iniciar IBT-2!");
   } else { Serial.println("[IBT-2] Iniciado com sucesso."); }
 
+  // Dissipação (2º IBT-2)
+  if (!iniciarDissipacao()) {
+    Serial.println("[DISSIPAÇÃO] ERRO: Falha ao iniciar Dissipação!");
+  } else { Serial.println("[DISSIPAÇÃO] Iniciado com sucesso."); }
+  
   Serial.println("------------------------------------");
 }

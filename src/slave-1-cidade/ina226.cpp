@@ -73,8 +73,8 @@ DadosEnergia lerDadosINA226() {
   dados.corrente_mA = current_mA;
   dados.potencia_mW = power_mW;
 
-  // Filtro de ruído (Podes descomentar quando o sistema estiver no local final)
-  if (busvoltage < 0.02) {
+  // Filtro de ruído 
+  if (busvoltage < 0.05) {
     busvoltage = 0.0;
     current_mA = 0.0;
     power_mW = 0.0;
