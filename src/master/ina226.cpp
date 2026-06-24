@@ -13,9 +13,9 @@ INA226 ina226(0x44);
 - V-: Lado da carga (para medir a corrente que passa pela carga em série)
 - VBUS: Positivo da fonte (para medir a tensão do barramento) = V+
 */
-
-#define I2C_SDA_PIN 21
-#define I2C_SCL_PIN 22
+// Exemplo: Se quiseres usar o Pino 4 e o Pino 5
+#define I2C_SDA_PIN 21   // Liga o fio SDA do INA226 neste pino
+#define I2C_SCL_PIN 22   // Liga o fio SCL do INA226 neste pino
 
 bool iniciarINA226() {
   Serial.println("\n--- A INICIAR O SENSOR INA226 ---");
